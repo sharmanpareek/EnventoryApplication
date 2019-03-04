@@ -1,0 +1,107 @@
+﻿    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="sidebar-search">
+                    <div class="input-group custom-search-form">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <!-- /input-group -->
+                </li>
+                <li>
+                    <a href="/Admin/AdminDashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> All User<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                           
+                            <li>
+                                <a href="/Admin/UserView">Register User</a>
+                            </li>
+                            <li>
+                                <a href="/Admin/UserInfo">User Info</a>
+                            </li>
+                        </ul>
+                 </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Masters<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li> 
+                            <a href="/Unit/UnitView">Unit Master</a>
+                        </li>
+                        <li>
+                            <a href="/Category/CategoryView">Category Master</a>
+                        </li>
+                        <li>
+                            <a href="/Item/ItemView">Item Master</a>
+                        </li>
+                        <li>
+                            <a href="/Party/PartyView">Party Master</a>
+                        </li>
+                        <li>
+                            <a href="/Tax/TaxView">Tax Master</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+               
+                <li>
+                    <a href="#"><i class="fa fa-wrench fa-fw"></i> Transactions<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/Purchase/PurchaseDetail">Stock-In(Purchase)</a>
+                        </li>
+                        <li>
+                            <a href="/Sales/SaleDetail">Stock-Out(Sales)</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-sitemap fa-fw"></i> Reports<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/StockReport/ReportView">Stock-In(Report)</a>
+                        </li>
+                        <li>
+                            <a href="#">Stock-Out(Report)</a>
+                        </li>
+                        <li>
+                            <a href="#">Stock Balance Report <span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#">Stock-In-Out(Report)</a>
+                                </li>
+                              
+                            </ul>
+                            <!-- /.nav-third-level -->
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-files-o fa-fw"></i> Settings<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="blank.html">User Profile</a>
+                        </li>
+                        <li>
+                            <a href="" id="logout"> Logout</a>
+                            @*<button type="button" id="logout">Logout</button>*@
+                        </li>
+                        
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+            </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+    <!-- /.navbar-static-side -->
+<script src="~/Scripts/jquery.min.js"></script>
+
+<script src="~/Scripts/Js/Logout.js"></script>

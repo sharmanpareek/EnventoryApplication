@@ -1,0 +1,148 @@
+﻿@model IOC.SERVICE.Data.UserModel
+
+@{
+    ViewBag.Title = "UserSave";
+    Layout = null;
+}
+
+@Styles.Render("~/Content/c1")
+@Styles.Render("~/Content/datepickercss")
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+<link href="~/Content/registration_style.css" rel="stylesheet" />
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "registrationForm" }))
+
+
+{
+    @Html.AntiForgeryToken()
+
+        <div class="container">
+            <div class="row main">
+                <div class="main-login main-center">
+                    <h5>Sign up once and watch any of our free demos.</h5>
+                    <form class="">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                           
+                                <label for="name" class="cols-sm-2 control-label">First Name</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", id = "FirstName" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" ,style="color:#ff0000"})
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name" class="cols-sm-2 control-label">Last Name</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", id = "LastName" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                        <div class="form-group">
+                           
+                                <label for="email" class="cols-sm-2 control-label">Email</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", id = "Email" })
+                                    </div>
+                                    <span id="result" />
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            <label for="password" class="cols-sm-2 control-label">Password</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", id = "Password" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                      
+
+                        <div class="form-group">
+                           
+                                <label for="Mobile Number" class="cols-sm-2 control-label">Mobile Number</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                        @Html.TextBoxFor(model => model.MobileNumber, new { @class = "form-control", id = "MobileNumber" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        <div class="form-group">
+                           
+                                <label for="DOB" class="cols-sm-2 control-label">DOB</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                        @Html.TextBoxFor(model => model.DOB, new { @class = "form-control datepicker", id = "DOB" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+                                </div>
+                        
+                        </div>
+
+                        <div class="form-group">
+                            
+                                <label for="Address" class="cols-sm-2 control-label">Address</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>
+                                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", id = "Address" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                </div>
+                         
+
+                       
+                           
+                        </div>
+                        <div class="form-group" >
+                      
+                                <label for="Gender" class="cols-sm-2 control-label">Gender</label>
+                                <div class="cols-sm-10" >
+                                    <div class="input-group">
+                                        Male:@Html.RadioButtonFor(m => m.Gender, "Male", new {@class="rb-btn" })&nbsp;
+                                        &nbsp;&nbsp;
+                                        Female: @Html.RadioButtonFor(m => m.Gender, "Female", new { @class = "rb-btn" })
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                                </div>
+                 
+                            
+                        </div>
+
+                        <div class="form-group">
+                       
+                                <input type="button" id="save" class="btn btn-default btn-md  login-button"  value="Register"/>
+                            <input type="button" id="Login" class="btn btn-default btn-md  login-button" value="Login" />
+                            </div>
+                       
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+}
+
+
+
+@Scripts.Render("~/bundles/b1")
+@Scripts.Render("~/bundles/datepickerjs")
+<script src="@Url.Content("~/Scripts/Js/Registration.js")"></script>
+
+
+        
+

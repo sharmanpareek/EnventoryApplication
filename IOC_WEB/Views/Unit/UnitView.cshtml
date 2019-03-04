@@ -1,0 +1,89 @@
+﻿@model IOC_SERVICE.Data.UnitTypeModel
+
+@{
+    ViewBag.Title = "UnitView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UnitView</h2>
+<button id="addBtn" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#unitModal" style="margin-top:10px;margin-bottom:15px;">Add New Unit</button>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "unitForm" }))
+
+
+{
+    @Html.AntiForgeryToken()
+
+    <div id="unitModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Unit</h4>
+                </div>
+                <div class="modal-body" style="margin-left:60px;">
+
+                    
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <input type="hidden" id="Id">
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Unit Name</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    @Html.TextBoxFor(model => model.UnitTypes, new { @class = "form-control", id = "txtUnitType" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.UnitTypes, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                      
+                    
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="btn-save-unit">Save Unit</button>
+                    <button type="button" class="btn btn-success" id="btn-update-unit">Update Unit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+}
+
+   <div class="row">
+    <div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Unit View
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="tbl-unit">
+                        <thead>
+                            <tr>
+                                <th>Unit Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+</div>
+
+    @section Scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/UnitTable.js"></script>
+
+
+    }

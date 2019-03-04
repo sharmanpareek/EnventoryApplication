@@ -1,0 +1,99 @@
+﻿@model IOC_SERVICE.Data.SaleViewModel
+<link href="~/Content/jquery-ui.structure.min.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.theme.min.css" rel="stylesheet" />
+<link href="~/Content/jquery.appendGrid-1.6.3.css" rel="stylesheet" />
+<link href="~/Content/grid.css" rel="stylesheet" />
+<link href="~/Content/invoice.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "SaleView";
+    Layout = ViewBag.SetLayout;
+}
+<h2>SaleDetail</h2>
+
+<div id="billModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Billing Invoice</h4>
+            </div>
+
+            <div id="bill-modal-body" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-print">Print</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Session["UserId"] != null && (string)Session["Role"] == "User")
+{
+
+    
+    @Html.Partial("_UserSaleDetail")
+}
+@if (Session["UserId"] != null && (string)Session["Role"] == "Admin")
+{
+
+
+    @Html.Partial("_AdminSaleDetail")
+}
+@section Scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery-ui.min-1.11.1.js"></script>
+    <script src="~/Scripts/jquery.appendGrid-1.6.3.js"></script>
+    <script>
+        //Bill User view
+        $("#tbl-sale-detail").on("click", ".billview", function () {
+            debugger
+            var button = $(this);
+            var saleid = button.attr("data-sale-id");
+            debugger
+            $.ajax({
+                type: 'POST',
+                url: '/Sales/SaleBillDetail',
+                data: { id: saleid },
+                dataType: "html",
+                success: function (data) {
+                    debugger
+                    $('#bill-modal-body').html(data);
+                    $('#billModal').modal('show');
+                },
+                error: function (status, xhr) {
+                    debugger
+                    alert('error');
+                }
+            })
+        })
+        //Bill Admin View
+        $("#tbl-admin-sale-view").on("click", ".billview", function () {
+            debugger
+            var button = $(this);
+            var saleid = button.attr("data-sale-id");
+            debugger
+            $.ajax({
+                type: 'POST',
+                url: '/Sales/SaleBillDetail',
+                data: { id: saleid },
+                dataType: "html",
+                success: function (data) {
+                    debugger
+                    $('#bill-modal-body').html(data);
+                    $('#billModal').modal('show');
+                },
+                error: function (status, xhr) {
+                    debugger
+                    alert('error');
+                }
+            })
+        })
+
+
+    </script>
+     
+}

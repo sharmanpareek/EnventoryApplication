@@ -1,0 +1,108 @@
+﻿@model IOC_SERVICE.Data.PurchaseViewModel
+
+@{
+    ViewBag.Title = "PurchaseDetail";
+    Layout = ViewBag.SetLayout;
+}
+
+<h2>PurchaseDetail</h2>
+<link href="~/Content/jquery-ui.structure.min.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.theme.min.css" rel="stylesheet" />
+<link href="~/Content/jquery.appendGrid-1.6.3.css" rel="stylesheet" />
+<link href="~/Content/invoice.css" rel="stylesheet" />
+<link href="~/Content/grid.css" rel="stylesheet" />
+
+
+<div id="purchasebillModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Billing Invoice</h4>
+            </div>
+
+            <div id="purchasebill-modal-body" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-print">Print</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Session["UserId"] != null && (string)Session["Role"] == "User")
+{
+
+
+    @Html.Partial("_UserPurchaseDetail")
+}
+@if (Session["UserId"] != null && (string)Session["Role"] == "Admin")
+{
+
+
+    @Html.Partial("_AdminPurchaseDetail")
+}
+
+
+
+
+@section Scripts{
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery-ui.min-1.11.1.js"></script>
+    <script src="~/Scripts/jquery.appendGrid-1.6.3.js"></script>
+    <script>
+
+        //user bill View
+        $("#tbl-purchase-detail").on("click", ".billview", function () {
+
+            var button = $(this);
+            var purchaseid = button.attr("data-purchase-id");
+
+            $.ajax({
+                type: 'POST',
+                url: '/Purchase/BillDetails',
+                data: { id: purchaseid },
+                dataType: "html",
+                success: function (data) {
+
+                    $('#purchasebill-modal-body').html(data);
+                    $('#purchasebillModal').modal('show');
+                },
+                error: function (status, xhr) {
+
+                    alert('error');
+                }
+            })
+        })
+
+        //admin bill view
+       
+        $("#tbl-admin-purchase-view").on("click", ".billview", function () {
+
+            var button = $(this);
+            var purchaseid = button.attr("data-purchase-id");
+
+            $.ajax({
+                type: 'POST',
+                url: '/Purchase/BillDetails',
+                data: { id: purchaseid },
+                dataType: "html",
+                success: function (data) {
+
+                    $('#purchasebill-modal-body').html(data);
+                    $('#purchasebillModal').modal('show');
+                },
+                error: function (status, xhr) {
+
+                    alert('error');
+                }
+            })
+        })
+    </script>
+   
+}

@@ -1,0 +1,82 @@
+﻿@model IOC.SERVICE.Data.UserModel
+
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/Content/c1")
+<link href="~/Content/Login.css" rel="stylesheet"/>
+
+
+
+    @using (Html.BeginForm(FormMethod.Post)) 
+    {
+        @Html.AntiForgeryToken()
+
+    
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4" style="margin-top:60px;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-lock"></span> Login
+                            <span style="float:right">@Html.ActionLink("Forgot Password", "ForgotPassword", "User")</span>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form" >
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label">
+                                        Email
+                                    </label>
+                                    <div class="col-sm-9" >
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" ,id="Email"} })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">
+                                        Password
+                                    </label>
+                                    <div class="col-sm-9" style="margin-top:5px;">
+                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", id="Password" } })
+                                     
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-9">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" />
+                                                Remember me
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group last">
+                                    <div class="col-sm-offset-3 col-sm-9">
+                                        <button type="button" id="signin" class="btn btn-success btn-sm">
+                                            Sign in
+                                        </button>
+                                        <button type="reset" class="btn btn-default btn-sm">
+                                            Reset
+                                        </button>
+                                      
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+                            Not Registered ? @Html.ActionLink("Register Here", "UserSave", "User")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+@Scripts.Render("~/bundles/b1")
+<script src="~/Scripts/Js/Login.js"></script>

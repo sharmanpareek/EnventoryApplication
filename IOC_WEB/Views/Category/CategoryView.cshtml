@@ -1,0 +1,129 @@
+﻿@model IOC_SERVICE.Data.CategoryModel
+
+@{
+    ViewBag.Title = "CategoryView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CategoryView</h2>
+<button id="addBtn" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#categoryModal" style="margin-top:10px;margin-bottom:15px;">Add New Category</button>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "categoryForm" }))
+
+
+{
+    @Html.AntiForgeryToken()
+
+    <div id="categoryModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Category</h4>
+                </div>
+                <div class="modal-body" style="margin-left:60px;">
+
+                    <form class="">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Category Name</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    @Html.TextBoxFor(model => model.CategoryName, new { @class = "form-control", id = "txtcategoryname" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="btn-save-category">Save Category</button>
+                    <button type="button" class="btn btn-success" id="btn-update-category">Update Category</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Update Category-->
+    @*<div id="updatecategorymodal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+             Modal content
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Category</h4>
+                </div>
+                <div class="modal-body" style="margin-left:60px;">
+
+                    <form class="">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <input type="hidden" id="Id">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Category Name</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    @Html.TextBoxFor(model => model.CategoryName, new { @class = "form-control", id = "categories" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="btn-update-category">Update Category</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>*@
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Unit View
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="tbl-category">
+                        <thead>
+                            <tr>
+                                <th>Category Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/CategoryTable.js"></script>
+
+
+}

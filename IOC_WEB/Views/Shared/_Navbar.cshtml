@@ -1,0 +1,66 @@
+﻿  <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 20px;">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="javascript:void(0)">Welcome To Inventory Control System</a>
+          
+        </div>
+
+        <!-- /.navbar-header -->
+
+       <ul class="nav navbar-top-links navbar-right">
+
+     @if (Session["UserId"] != null)
+     {
+        <li>
+            <a href="JavaScript:void(0);">
+                <i class="glyphicon glyphicon-user"></i>
+                <text> Hello @Session["UserId"].ToString() </text>
+            </a>
+        </li>
+     }
+     else if (Session["UserId"] != null)
+     {
+        <li>
+            <a href="JavaScript:void(0);">
+                <i class="glyphicon glyphicon-user"></i>
+                <text> Hello @Session["UserId"].ToString() </text>
+            </a>
+        </li>
+    }
+       <!-- /.dropdown -->
+       
+              
+            
+       
+            <li class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-top:10px;">
+                    
+                    Profile <i class="fa fa-caret-down"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="/Users/UserView"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                    </li>
+                    <li>
+                        <a href="JavaScript:Void(0);"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="" id="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+    </nav>
+<script src="~/Scripts/jquery.min.js"></script>
+
+<script src="~/Scripts/Js/Logout.js"></script>

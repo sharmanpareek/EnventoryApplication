@@ -1,0 +1,459 @@
+﻿@model IOC_SERVICE.Data.SaleViewModel
+
+
+<div id="saleModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width:60%;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sale Bill </h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "saleForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label for="name" class="cols-sm-2 control-label">Invoice Number</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(model => model.BillNo, new { @class = "form-control", id = "txtBillNo", style = "width:110px;" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.BillNo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" style="margin-left:-38px">
+                                <label for="Invoice Date" class="cols-sm-2 control-label">Invoice Date</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                        @Html.TextBoxFor(model => model.CreatedDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker", id = "createdDate", style = "width:115px;" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="PartyName" class="cols-sm-2 control-label">Party Name</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(model => model.PartyId, new SelectList(ViewBag.Parties, "PartyId", "PartyName"),
+"select Party",
+new { @class = "form-control", style = "width:395px;" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.PartyId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                        <div class="row" style="margin-top:10px;">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <table id="tblSaleGrid" style="width:100%;"></table>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:20px; float:right">
+                            <div class="form-group">
+
+                                <div class="col-lg-12">
+                                    <label for="Total" class="cols-sm-2 control-label">Total</label>
+                                    <div class="cols-sm-10">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.Total, new { @class = "form-control", id = "txtTotal", @readonly = "readonly" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <label for="taxRate" class="cols-sm-2 control-label">Tax Rate</label>
+                                    <div class="cols-sm-10">
+                                        <div class="input-group">
+                                            @Html.DropDownListFor(model => model.TaxId, new SelectList(ViewBag.taxes, "TaxId", "TaxRate"),
+"select Tax",
+new { @class = "form-control", style = "width:195px;" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.TaxId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="Grand Total" class="cols-sm-2 control-label">Grand Total</label>
+                                    <div class="cols-sm-10">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.GrandTotal, new { @class = "form-control", id = "txtGrandTotal", @readonly = "readonly" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.GrandTotal, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+
+
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-success" style="float:left; margin-top:130px;" id="btn-save">Save Detail</button>
+                        </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Sale View
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#saleModal" style="float:right; margin-top:-5px;">Add Sale</button>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="tbl-sale-detail">
+                        <thead>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Party Name</th>
+                                <th>Total Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="billModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Billing Invoice</h4>
+            </div>
+
+            <div id="bill-modal-body" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-print">Print</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ 
+<script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+
+    <script>
+            $(function () {
+                debugger
+                $('#tblSaleGrid').appendGrid({
+                    caption: 'Sale Details',
+                    initRows: 1,
+                    columns: [
+                       { name: 'ItemName', display: 'ItemName', type: 'select',ctrlClass: 'class-dropdown',ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '160px' } },
+                    { name: 'UnitPrice', display: 'UnitPrice', type: 'text',ctrlClass: 'class-price', ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '100px' } },
+                { name: 'UnitSold', display: 'UnitSold', type: 'text',ctrlClass: 'class-unitsold',  ctrlAttr: { maxlength: 4 }, ctrlCss: { width: '60px' } },
+                { name: 'Total', display: 'SubTotal', type: 'text',ctrlClass: 'class-subtotal', ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '100px' } },
+                { name: 'RecordId', type: 'hidden', value: 0 }
+                    ],
+
+                    hideButtons: {
+                        remove: false,
+                        insert:true,
+                        moveUp:	true,
+                        moveDown:true,
+
+                    },
+
+
+
+
+                    customFooterButtons: [
+               {
+                   uiButton: { icons: { primary: 'ui-icon-refresh' } },
+                   btnCss: { 'color': 'rgb(0, 126, 255)' ,'float': 'right','margin-right': '190px','height':'20px'},
+                   var: count=0,
+                   click: ("#tblSaleGrid_footer_td .ui-button ui-corner-all ui-widget", function () {
+                       debugger
+                       var lth=$("#tblSaleGrid .ui-widget-content > tr").length;
+                       var grandTotal=0;
+                       for(var i=1;i<=lth;i++)
+                       {
+                           var val=$('#tblSaleGrid_Total_'+i).val();
+                           grandTotal = grandTotal +parseInt(val);
+                           $('#txtTotal').val(grandTotal);
+
+
+                       }
+
+
+                   })
+
+               }
+                    ],
+
+
+
+                });
+
+                //$("#tblSaleGrid .ui-widget-content .class-subtotal").attr("readonly",true);
+
+
+            });
+
+            function dropdownAppend(count){
+
+                $.each(@Html.Raw(Json.Encode(ViewBag.Items)),function(i,value){
+                    debugger;
+                    $("#tblSaleGrid_ItemName_td_"+count+" .class-dropdown").append("<option value="+value.ItemId+">"+value.ItemName+"</option>")
+
+                })
+
+            }
+
+
+
+
+
+
+            $(document).ready(function () {
+                var count=0;
+                dropdownAppend(count=count+1)
+                $('#tblSaleGrid_footer_td .append').click(function(){
+
+                    dropdownAppend(count=count+1)
+                    // $("#tblSaleGrid .ui-widget-content .class-subtotal").attr("readonly",true);
+                })
+                //$(".remove").click(function(){
+                //    debugger
+                //})
+
+                $('#tblSaleGrid .ui-widget-content').on("change",".class-dropdown",function(){
+                    debugger
+                    var select=$(this);
+                    $.each(@Html.Raw(Json.Encode(ViewBag.Items)),function(i,value){
+                        debugger;
+                        if(value.ItemId==select.val()){
+
+                            select.closest("tr").find("input[class='class-price']").val(value.UnitPrice)
+                        }
+                    })
+                });
+
+                $('#tblSaleGrid .ui-widget-content').on("keyup",".class-unitsold",function(){
+                    debugger
+                    var select=$(this);
+                    if(!isNaN(select.closest("tr").find("input[class='class-unitsold']").val())){
+                        debugger
+                        var a=select.closest("tr").find("input[class='class-price']").val();
+                        var b=select.closest("tr").find("input[class='class-unitsold']").val();
+                        var c=a*b;
+                        debugger
+                        select.closest("tr").find("input[class='class-subtotal']").val(c);
+                    }
+
+
+                });
+                $('#tblSaleGrid .ui-widget-content').on("keyup",".class-price",function(){
+                    debugger
+                    var select=$(this);
+                    if(!isNaN(select.closest("tr").find("input[class='class-price']").val())){
+                        debugger
+                        var a=select.closest("tr").find("input[class='class-price']").val();
+                        var b=select.closest("tr").find("input[class='class-unitsold']").val();
+                        var c=a*b;
+                        debugger
+                        select.closest("tr").find("input[class='class-subtotal']").val(c);
+                    }
+
+
+                });
+
+
+
+                $("#TaxId").on("change",function(){
+                    debugger
+                    var a= parseInt($('#TaxId :selected').text());
+                    debugger
+                    var b= parseInt($('#txtTotal').val());
+                    debugger
+                    var c=b*a/100+b;
+                    debugger
+                    $('#txtGrandTotal').val(c);
+
+                })
+
+
+
+
+            });
+            $("#btn-save").on("click",function(){
+                $("#saleForm").validate({
+
+                    rules:{
+                        Total:{
+
+                            required:true
+                        },
+                        GrandTotal:{
+
+                            required:true
+                        },
+                        PartyId:{
+                            required:true
+                        },
+                        TaxId:{
+                            required:true
+                        },
+                        BillNo:{
+                            required:true
+                        },
+                        CreatedDate:{
+                            required:true
+                        },
+
+                    },
+                    message:{
+                        Total:{
+
+                            required:"Required"
+                        },
+                        GrandTotal:{
+
+                            required:"Required"
+                        },
+                        PartyId:{
+                            required:"Required"
+                        },
+                        TaxId:{
+                            required:"Required"
+                        },
+                        BillNo:{
+                            required:"Required"
+                        },
+                        CreatedDate:{
+                            required:"Required"
+                        },
+                    },
+                });
+                if  ($("#saleForm").valid()){
+
+
+                    var form = $("#saleForm");
+                    form.validate();
+                    var isValid = form.valid();
+                    if (isValid) {
+                        debugger
+                        var saleDetailData=[];
+                        var count=1;
+                        var lth=$("#tblSaleGrid .ui-widget-content > tr").length;
+                        for(var i=0;i<lth;i++)
+                        {
+                            saleDetailData[i]={
+                                ItemId:$('#tblSaleGrid_ItemName_'+count +'  :selected ').val(),
+                                UnitPrice:$('#tblSaleGrid_UnitPrice_'+count).val(),
+                                UnitSold:$('#tblSaleGrid_UnitSold_'+count).val(),
+                                SubTotal:$('#tblSaleGrid_Total_'+count).val()
+                            }
+                            count++;
+                        }
+                        // saleDetailData = JSON.stringify({ 'saleModel': saleDetailData });
+                        debugger
+
+
+                        //debugger
+                        var saleFormData ={
+                            "BillNo":$("#txtBillNo").val(),
+                            "PartyId":$("#PartyId").val(),
+                            "CreatedDate":$("#createdDate").val(),
+                            "Total":$("#txtTotal").val(),
+                            "GrandTotal":$("#txtGrandTotal").val(),
+                            "TaxId":$("#TaxId").val(),
+                            "SaleDetailList":saleDetailData
+                        }
+                        debugger
+                        $.ajax({
+                            type: "POST",
+                            url: "/Sales/SaveSaleDetails",
+                            //contentType: 'application/json; charset=utf-8',
+                            saleFormData:  JSON.stringify({ 'saleModel': saleFormData }),
+                            data:saleFormData,
+                            dataType:"json",
+                            success: function(data){
+                                $("#saleModal").modal("hide");
+                                $("#saleForm")[0].reset();
+                            },
+                            error: function(){}
+
+
+                        })
+                    }
+                    else{
+
+                    }
+
+
+                }
+
+
+            });
+
+            //Get Data From Table
+
+            $("#tbl-sale-detail").dataTable({
+
+                ajax:{
+                    type:"POST",
+                    url: '/Sales/SaleDetails',
+                    dataSrc: ""
+
+                },
+
+                columns: [
+                  {
+                      data: "BillNo"
+                  },
+
+                  {
+                      data: "PartyName"
+                  },
+                  {
+                      data: "GrandTotal"
+                  },
+                  {
+                      data: "SaleId",
+                      render: function (data) {
+                          debugger
+                          return "<button class='btn btn-primary btn-sm billview' data-sale-id= " + data + ">Generate Bill</button>  "
+                      }
+
+                  }
+                ]
+            });
+
+
+
+
+           
+
+
+    </script>

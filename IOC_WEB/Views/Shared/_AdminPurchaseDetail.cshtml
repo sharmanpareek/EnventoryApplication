@@ -1,0 +1,68 @@
+﻿
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Sale View
+
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="tbl-admin-purchase-view">
+                        <thead>
+                            <tr>
+                                <th>UserName</th>
+                                <th>Invoice Number</th>
+                                <th>Party Name</th>
+                                <th>Total Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--close dataTable-->
+<script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+
+<script>
+
+    $("#tbl-admin-purchase-view").dataTable({
+
+        ajax: {
+            type: "POST",
+            url: '/Purchase/PurchaseDetails',
+            dataSrc: ""
+
+        },
+
+        columns: [
+          {
+              data: "FirstName"
+          },
+
+          {
+              data: "InvoiceNumber"
+          },
+          {
+              data: "PartyName"
+          },
+          {
+              data: "GrandTotal"
+          },
+          {
+              data: "PurchaseId",
+              render: function (data) {
+                  debugger
+                  return "<button class='btn btn-primary btn-sm billview' data-purchase-id= " + data + ">Generate Bill</button>  "
+              }
+
+          }
+        ]
+    });
+
+</script>

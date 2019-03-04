@@ -1,0 +1,413 @@
+﻿@model IOC_SERVICE.Data.PurchaseViewModel
+
+
+
+<div id="purchaseModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width:60%;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Purchase Bill </h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "purchaseForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label for="name" class="cols-sm-2 control-label">Invoice Number</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(model => model.InvoiceNumber, new { @class = "form-control", id = "txtBillNo", style = "width:110px;" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.InvoiceNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="margin-left:-38px">
+                                <label for="Invoice Date" class="cols-sm-2 control-label">Invoice Date</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                        @Html.TextBoxFor(model => model.PurchaseDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker", id = "purchaseDate", style = "width:115px;" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="PartyName" class="cols-sm-2 control-label">Party Name</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(model => model.PartyId, new SelectList(ViewBag.Parties, "PartyId", "PartyName"),
+                        "select Party",
+                        new { @class = "form-control", style = "width:395px;" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.PartyId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <table id="tblPurchaseGrid" style="width:100%;"></table>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:20px; float:right">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <label for="Total" class="cols-sm-2 control-label">Total</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(model => model.Total, new { @class = "form-control", id = "txtTotal", @readonly = "readonly" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="taxRate" class="cols-sm-2 control-label">Tax Rate</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(model => model.TaxId, new SelectList(ViewBag.taxes, "TaxId", "TaxRate"),
+                        "select Tax",
+                        new { @class = "form-control", style = "width:195px;" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.TaxId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="Grand Total" class="cols-sm-2 control-label">Grand Total</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(model => model.GrandTotal, new { @class = "form-control", id = "txtGrandTotal", @readonly = "readonly" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.GrandTotal, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" style="float:left; margin-top:130px; width:80px;" id="btn-save">Save</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Purchase View
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#purchaseModal" style="float:right; margin-top:-5px;">Purchase Item</button>
+
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="tbl-purchase-detail">
+                        <thead>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Party Name</th>
+                                <th>Total Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+                    <script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+                    <script>
+
+                        $(function () {
+
+                            $('#tblPurchaseGrid').appendGrid({
+                                caption: 'Purchase Details',
+                                initRows: 1,
+                                columns: [
+                                   { name: 'ItemName', display: 'ItemName', type: 'select',ctrlClass: 'class-dropdown',ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '160px' } },
+                                { name: 'UnitPrice', display: 'UnitPrice', type: 'text',ctrlClass: 'class-price', ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '100px' } },
+                            { name: 'PurchaseUnit', display: 'PurchaseUnit', type: 'text',ctrlClass: 'class-purchaseunit',  ctrlAttr: { maxlength: 4 }, ctrlCss: { width: '60px' } },
+                            { name: 'Total', display: 'SubTotal', type: 'text',ctrlClass: 'class-subtotal', ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '100px' } },
+                            { name: 'RecordId', type: 'hidden', value: 0 }
+                                ],
+
+                                hideButtons: {
+                                    remove: false,
+                                    insert:true,
+                                    moveUp:	true,
+                                    moveDown:true,
+
+                                },
+                                customFooterButtons: [
+                           {
+                               uiButton: { icons: { primary: 'ui-icon-refresh' } },
+                               btnCss: { 'color': 'rgb(0, 126, 255)' ,'float': 'right','margin-right': '190px','height':'20px'},
+                               var: count=0,
+                               click: ("#tblPurchaseGrid_footer_td .ui-button ui-corner-all ui-widget", function () {
+
+                                   var lth=$("#tblPurchaseGrid .ui-widget-content > tr").length;
+                                   var grandTotal=0;
+                                   for(var i=1;i<=lth;i++)
+                                   {
+                                       var val=$('#tblPurchaseGrid_Total_'+i).val();
+                                       grandTotal = grandTotal +parseInt(val);
+                                       $('#txtTotal').val(grandTotal);
+                                   }
+                               })
+                           }
+                                ]
+                            });
+
+                            // $("#tblSaleGrid .ui-widget-content .class-subtotal").attr("readonly",true);
+                        });
+
+                        function dropdownAppend(count){
+
+                            $.each(@Html.Raw(Json.Encode(ViewBag.Items)),function(i,value){
+
+                                $("#tblPurchaseGrid_ItemName_td_"+count+" .class-dropdown").append("<option value="+value.ItemId+">"+value.ItemName+"</option>")
+
+                            })
+
+                        }
+
+                        $(document).ready(function () {
+                            var count=0;
+                            dropdownAppend(count=count+1)
+                            $('#tblPurchaseGrid_footer_td .append').click(function(){
+                                dropdownAppend(count=count+1)
+                            })
+                            $('#tblPurchaseGrid .ui-widget-content').on("change",".class-dropdown",function(){
+
+                                var select=$(this);
+                                $.each(@Html.Raw(Json.Encode(ViewBag.Items)),function(i,value){
+
+                                    if(value.ItemId==select.val()){
+                                        //alert(select.closest("tr").find("input[class='class-price']").val());
+                                        select.closest("tr").find("input[class='class-price']").val(value.Price)
+                                    }
+                                })
+                            });
+                            $('#tblPurchaseGrid .ui-widget-content').on("keyup",".class-purchaseunit",function(){
+
+                                var select=$(this);
+                                if(!isNaN(select.closest("tr").find("input[class='class-purchaseunit']").val())){
+
+                                    var a=select.closest("tr").find("input[class='class-price']").val();
+                                    var b=select.closest("tr").find("input[class='class-purchaseunit']").val();
+                                    var c=a*b;
+
+                                    select.closest("tr").find("input[class='class-subtotal']").val(c);
+                                }
+                            });
+                            $('#tblPurchaseGrid .ui-widget-content').on("keyup",".class-price",function(){
+
+                                var select=$(this);
+                                if(!isNaN(select.closest("tr").find("input[class='class-price']").val())){
+
+                                    var a=select.closest("tr").find("input[class='class-price']").val();
+                                    var b=select.closest("tr").find("input[class='class-purchaseunit']").val();
+                                    var c=a*b;
+
+                                    select.closest("tr").find("input[class='class-subtotal']").val(c);
+                                }
+                            });
+
+                            $("#TaxId").on("change",function(){
+
+                                var a= parseInt($('#TaxId :selected').text());
+
+                                var b= parseInt($('#txtTotal').val());
+
+                                var c=b*a/100+b;
+
+                                $('#txtGrandTotal').val(c);
+                            })
+                        })
+
+                        //Data Post To Database
+                        $("#btn-save").click(function(){
+                            $("#purchaseForm").validate({
+
+                                rules:{
+                                    Total:{
+
+                                        required:true
+                                    },
+                                    GrandTotal:{
+
+                                        required:true
+                                    },
+                                    PartyId:{
+                                        required:true
+                                    },
+                                    TaxId:{
+                                        required:true
+                                    },
+                                    InvoiceNumber:{
+                                        required:true
+                                    },
+                                    PurchaseDate:{
+                                        required:true
+                                    },
+
+                                },
+                                message:{
+                                    Total:{
+
+                                        required:"Required"
+                                    },
+                                    GrandTotal:{
+
+                                        required:"Required"
+                                    },
+                                    PartyId:{
+                                        required:"Required"
+                                    },
+                                    TaxId:{
+                                        required:"Required"
+                                    },
+                                    InvoiceNumber:{
+                                        required:"Required"
+                                    },
+                                    PurchaseDate:{
+                                        required:"Required"
+                                    },
+                                },
+                            });
+                            if  ($("#purchaseForm").valid()){
+                                var form = $("#purchaseForm");
+                                form.validate();
+                                var isValid = form.valid();
+                                if (isValid) {
+                                    var PurchaseDetailData=[];
+
+                                    count=1;
+                                    var lth=$("#tblPurchaseGrid .ui-widget-content > tr").length;
+                                    for(var i=0;i<lth;i++)
+                                    {
+                                        PurchaseDetailData[i]={
+                                            ItemId:$('#tblPurchaseGrid_ItemName_'+count +'  :selected ').val(),
+                                            UnitPrice:$('#tblPurchaseGrid_UnitPrice_'+count).val(),
+                                            PurchaseUnit:$('#tblPurchaseGrid_PurchaseUnit_'+count).val(),
+                                            SubTotal:$('#tblPurchaseGrid_Total_'+count).val(),
+                                        }
+                                        count++;
+                                    }
+
+                                    var PurchaseFormData={
+                                        "InvoiceNumber":$("#txtBillNo").val(),
+                                        "PartyId":$("#PartyId").val(),
+                                        "PurchaseDate":$("#purchaseDate").val(),
+                                        "Total":$("#txtTotal").val(),
+                                        "GrandTotal":$("#txtGrandTotal").val(),
+                                        "TaxId":$("#TaxId").val(),
+                                        "PurchaseDetailList":PurchaseDetailData
+                                    }
+                                    $.ajax({
+                                        type:'Post',
+                                        url: '/Purchase/SavePurchaseDetails',
+                                        PurchaseFormData:JSON.stringify({'purchaseModel':PurchaseFormData}),
+                                        data:PurchaseFormData,
+                                        dataType:'json',
+                                        success:function(data){
+                                            $("#purchaseModal").modal("hide");
+                                            $("#purchaseForm")[0].reset();
+
+                                        },
+                                        error:function(){
+                                            alert("Not Saved")
+                                        }
+                                    })
+                                }
+                                else{
+
+                                }
+
+
+                            }
+                        })
+
+
+
+                        //Get Purchase data on View From Database
+
+                        $("#tbl-purchase-detail").dataTable({
+
+                            ajax:{
+                                type:"POST",
+                                url: '/Purchase/purchaseDetails',
+                                dataSrc: ""
+
+                            },
+
+                            columns: [
+                              {
+                                  data: "InvoiceNumber"
+                              },
+
+                              {
+                                  data: "PartyName"
+                              },
+                              {
+                                  data: "GrandTotal"
+                              },
+                              {
+                                  data: "PurchaseId",
+                                  render: function (data) {
+                                      debugger
+                                      return "<button class='btn btn-primary btn-sm billview' data-purchase-id= " + data + ">Generate Bill</button>  "+
+                                          "<button class='btn btn-danger btn-sm delete' data-purchase-id= "+ data +">cancel Bill</button> "
+                                  }
+
+                              }
+                            ]
+                        });
+
+                        //Cancel Bill of Party
+                        $("#tbl-purchase-detail").on("click",".delete",function(){
+                            var button=$(this);
+                            bootbox.confirm("Are You Sure To Cancel This Bill",function(result){
+                                if(result){
+                                    var purchaseid = button.attr("data-purchase-id");
+                                    $.ajax({
+                                        type: 'post',
+                                        url: '/Purchase/CancelBill',
+                                        data:{
+                                            "PurchaseId": purchaseid
+                                        },
+                                        dataType:"json",
+                                        success:function(data){
+                                            if(data==true)
+                                            {
+                                                button.parents("tr").remove();
+                                            }
+                                        },
+                                        error:function(){
+
+                                        },
+                                    })
+                                }
+                            })
+                        })
+
+
+
+
+
+                    </script>

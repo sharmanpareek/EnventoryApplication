@@ -1,0 +1,178 @@
+﻿@model IOC_SERVICE.Data.ItemTypeModel
+
+@{
+    ViewBag.Title = "ItemView";
+}
+@Styles.Render("~/Content/datepickercss")
+
+
+<h3>Item View </h3>
+<hr />
+
+<button id="addBtn" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#ItemAddModel" style="margin-top:10px;margin-bottom:15px;">Add Item</button>
+
+<!-- Modal -->
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "AddItemForm" }))
+
+
+{
+    @Html.AntiForgeryToken()
+
+    <div id="ItemAddModel" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Item</h4>
+                </div>
+                <div class="modal-body" style="margin-left:60px;">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <input type="hidden" id="Id" />
+                        <div class="form-group">
+                            <label for="Category" class="cols-sm-2 control-label">Item Category</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-plus fa" aria-hidden="true"></i></span>
+                                    @Html.DropDownListFor(model => model.CategoryId, new SelectList(ViewBag.categories, "CategoryId", "CategoryName"),
+                        "select Category",
+                        new { @class = "form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Unit" class="cols-sm-2 control-label">Unit Type</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-plus fa" aria-hidden="true"></i></span>
+                                    @Html.DropDownListFor(model => model.UnitId, new SelectList(ViewBag.units, "UnitId", "UnitTypes"),
+                        "select UnitType",
+                        new { @class = "form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.UnitId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Item Name</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-plus fa" aria-hidden="true"></i></span>
+                                    @Html.TextBoxFor(model => model.ItemName, new { @class = "form-control", id = "txtItem" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ItemName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                      
+
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Price</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-inr fa" aria-hidden="true"></i></span>
+                                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", id = "txtItemPrice" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Unit Price</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-inr fa" aria-hidden="true"></i></span>
+                                    @Html.TextBoxFor(model => model.UnitPrice, new { @class = "form-control", id = "txtItemUnitPrice" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Mfg Date</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar fa" aria-hidden="true"></i></span>
+                                    @Html.TextBoxFor(model => model.MfgDate, new { @class = "form-control datepicker" , id = "txtMfgDate" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.MfgDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Exp Date</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar fa" aria-hidden="true"></i></span>
+                                    @Html.TextBoxFor(model => model.ExpDate, new { @class = "form-control datepicker"  , id = "txtExpDate" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ExpDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Product Company</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    @Html.TextBoxFor(model => model.ProductCompany, new { @class = "form-control", id = "txtProductCompany" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ProductCompany, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Quantity</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-plus fa" aria-hidden="true"></i></span>
+                                    @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", id = "txtquantity" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                   
+                    </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="btnsaveitem">Save Record</button>
+                    <button type="button" class="btn btn-success" id="btnupdateitem">Update Record</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+}
+
+@*DataTbale for Item View*@
+
+
+
+                    <table class="table table-bordered table-hover" id="tbl-item">
+                        <thead>
+                            <tr id="th-data">
+                                <th>Item Name</th>
+                                
+                                <th>Price</th>
+                                <th>UnitPrice</th>
+                                <th>MfgDate</th>
+                                <th>ExpDate</th>
+                                <th>ProductCompany</th>
+                                <th>Quantity</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                
+
+    @section Scripts{
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/datepickerjs")
+        <script src="~/Scripts/Js/ItemTable.js"></script>
+    }
+

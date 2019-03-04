@@ -1,0 +1,9 @@
+C:\Users\sharwan.vyas\documents\visual studio 2015\Projects\INVENTORY_CONTROL_MANAGEMENT\IOC_DATA\bin\Debug\IOC_DATA.dll.config
+C:\Users\sharwan.vyas\documents\visual studio 2015\Projects\INVENTORY_CONTROL_MANAGEMENT\IOC_DATA\bin\Debug\IOC_DATA.dll
+C:\Users\sharwan.vyas\documents\visual studio 2015\Projects\INVENTORY_CONTROL_MANAGEMENT\IOC_DATA\bin\Debug\IOC_DATA.pdb
+C:\Users\sharwan.vyas\documents\visual studio 2015\Projects\INVENTORY_CONTROL_MANAGEMENT\IOC_DATA\bin\Debug\EntityFramework.dll
+C:\Users\sharwan.vyas\documents\visual studio 2015\Projects\INVENTORY_CONTROL_MANAGEMENT\IOC_DATA\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\sharwan.vyas\documents\visual studio 2015\Projects\INVENTORY_CONTROL_MANAGEMENT\IOC_DATA\bin\Debug\EntityFramework.xml
+C:\Users\sharwan.vyas\documents\visual studio 2015\Projects\INVENTORY_CONTROL_MANAGEMENT\IOC_DATA\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\sharwan.vyas\documents\visual studio 2015\Projects\INVENTORY_CONTROL_MANAGEMENT\IOC_DATA\obj\Debug\IOC_DATA.dll
+C:\Users\sharwan.vyas\documents\visual studio 2015\Projects\INVENTORY_CONTROL_MANAGEMENT\IOC_DATA\obj\Debug\IOC_DATA.pdb
